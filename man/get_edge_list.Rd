@@ -4,19 +4,33 @@
 \alias{get_edge_list}
 \title{get_edge_list}
 \usage{
-get_edge_list(df, actor, assoc_actors, idx)
+get_edge_list(
+  df,
+  actor = actor,
+  assoc_actors = assoc_actors,
+  idx = idx,
+  sep = ";"
+)
 }
 \arguments{
-\item{who}{I don't know what this is for}
+\item{df}{dataframe}
+
+\item{actor}{actor or node}
+
+\item{idx}{index, row number or grouping variable}
+
+\item{sep}{separator - default sep = ';'}
+
+\item{assoc_actor_1}{second actor or node with multiple values sep = ';'}
 }
 \value{
 returns a dataframe or tibble
 }
 \description{
-Creates an edge list when the second column list any number of entities for one observation.
+Creates an edge list when the second column lists any number of nodes/entities for one observation.
 }
 \details{
-\code{get_edge_list()} takes an edge list with an id column where the second column has multiple values. It then separates the second column and creates a full edge list.
+\code{get_edge_list()} takes an edge list with an id column where the second column has multiple values. It then separates the second column and creates a full edge list. As opposed to \code{separate_rows()}, this function only keeps those pairwise combinations that exist in the original data.
 }
 \examples{
 df <- tibble::tibble(
@@ -25,10 +39,6 @@ df <- tibble::tibble(
    dplyr::mutate(idx = dplyr::row_number()) |>
    dplyr::select(idx, dplyr::everything())
 
-print(get_edge_list(df,
-                    actor = actor_1,
-                    assoc_actors = assoc_actor_1,
-                    idx = idx))
 
 
 }

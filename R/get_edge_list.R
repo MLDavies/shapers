@@ -1,10 +1,14 @@
 #' get_edge_list
 #'
-#' @description Creates an edge list when the second column list any number of entities for one observation.
+#' @description Creates an edge list when the second column lists any number of nodes/entities for one observation.
 #'
-#' @details \code{get_edge_list()} takes an edge list with an id column where the second column has multiple values. It then separates the second column and creates a full edge list.
+#' @details \code{get_edge_list()} takes an edge list with an id column where the second column has multiple values. It then separates the second column and creates a full edge list. As opposed to \code{separate_rows()}, this function only keeps those pairwise combinations that exist in the original data.
 #'
-#' @param who I don't know what this is for
+#' @param df dataframe
+#' @param actor actor or node
+#' @param assoc_actor_1 second actor or node with multiple values sep = ';'
+#' @param idx index, row number or grouping variable
+#' @param sep separator - default sep = ';'
 #'
 #' @return returns a dataframe or tibble
 #'
@@ -15,18 +19,23 @@
 #'    dplyr::mutate(idx = dplyr::row_number()) |>
 #'    dplyr::select(idx, dplyr::everything())
 #'
-#' print(get_edge_list(df,
-#'                     actor = actor_1,
-#'                     assoc_actors = assoc_actor_1,
-#'                     idx = idx))
+# print(get_edge_list(df,
+#                     actor = actor_1,
+#                     assoc_actors = assoc_actor_1,
+#                     idx = idx))
 #'
 #'
 #' @export
-get_edge_list <- function(df, actor, assoc_actors, idx){
+get_edge_list <- function(df,
+                          actor = actor,
+                          assoc_actors = assoc_actors,
+                          idx = idx,
+                          sep = ';'
+                          ){
   df_temp <- df  |>
     dplyr::select(actor_1, assoc_actor_1, idx) |>
     dplyr::group_by(idx) |>
-    dplyr::filter(stringr::str_detect(assoc_actor_1, ';')) |>
+    dplyr::filter(stringr::str_detect(assoc_actor_1, sep)) |>
     tidyr::separate_rows(assoc_actor_1) |>
     dplyr::mutate(assoc_actor_1 = stringr::str_squish(assoc_actor_1)) |>
     tidyr::pivot_longer(actor_1:assoc_actor_1) |>
@@ -47,6 +56,6 @@ get_edge_list <- function(df, actor, assoc_actors, idx){
   #return(df_temp)
 
   return <- df |>
-    dplyr::filter(!stringr::str_detect(assoc_actor_1, ";")) |>
+    dplyr::filter(!stringr::str_detect(assoc_actor_1, sep)) |>
     dplyr::bind_rows(df_temp)
 }

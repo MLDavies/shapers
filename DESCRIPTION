@@ -10,8 +10,8 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
 Imports:
-    dplyr
-    tidyr
-    stringr
+    dplyr,
+    tidyr,
+    stringr,
     tibble
 URL: https://github.com/MLDavies
