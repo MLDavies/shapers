@@ -13,5 +13,6 @@ Imports:
     dplyr,
     tidyr,
     stringr,
-    tibble
+    tibble,
+    magrittr
 URL: https://github.com/MLDavies

@@ -4,13 +4,7 @@
 \alias{get_edge_list}
 \title{get_edge_list}
 \usage{
-get_edge_list(
-  df,
-  actor = actor,
-  assoc_actors = assoc_actors,
-  idx = idx,
-  sep = ";"
-)
+get_edge_list(df, actor, assoc_actors, idx, sep = ";")
 }
 \arguments{
 \item{df}{dataframe}
@@ -34,11 +28,14 @@ Creates an edge list when the second column lists any number of nodes/entities f
 }
 \examples{
 df <- tibble::tibble(
- actor_1 = c("A", "A", "B"),
+actor_1 = c("A", "A", "B"),
  assoc_actor_1 = c("B", "B; C", "C; D; E")) |>
    dplyr::mutate(idx = dplyr::row_number()) |>
    dplyr::select(idx, dplyr::everything())
 
-
+print(get_edge_list(df,
+                    actor = 'actor_1',
+                    assoc_actors = 'assoc_actor_1',
+                    idx = 'idx'))
 
 }

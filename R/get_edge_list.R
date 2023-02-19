@@ -14,31 +14,32 @@
 #'
 #' @examples
 #' df <- tibble::tibble(
-#'  actor_1 = c("A", "A", "B"),
+#' actor_1 = c("A", "A", "B"),
 #'  assoc_actor_1 = c("B", "B; C", "C; D; E")) |>
 #'    dplyr::mutate(idx = dplyr::row_number()) |>
 #'    dplyr::select(idx, dplyr::everything())
 #'
-# print(get_edge_list(df,
-#                     actor = actor_1,
-#                     assoc_actors = assoc_actor_1,
-#                     idx = idx))
+#' print(get_edge_list(df,
+#'                     actor = 'actor_1',
+#'                     assoc_actors = 'assoc_actor_1',
+#'                     idx = 'idx'))
 #'
+#' @importFrom magrittr %>%
 #'
 #' @export
 get_edge_list <- function(df,
-                          actor = actor,
-                          assoc_actors = assoc_actors,
-                          idx = idx,
+                          actor,
+                          assoc_actors,
+                          idx,
                           sep = ';'
                           ){
   df_temp <- df  |>
-    dplyr::select(actor_1, assoc_actor_1, idx) |>
+    dplyr::select(all_of(actor), all_of(assoc_actors), all_of(idx)) |>
     dplyr::group_by(idx) |>
-    dplyr::filter(stringr::str_detect(assoc_actor_1, sep)) |>
-    tidyr::separate_rows(assoc_actor_1) |>
-    dplyr::mutate(assoc_actor_1 = stringr::str_squish(assoc_actor_1)) |>
-    tidyr::pivot_longer(actor_1:assoc_actor_1) |>
+    dplyr::filter(stringr::str_detect(assoc_actors, ';')) |>
+    tidyr::separate_rows(assoc_actors) |>
+    dplyr::mutate(assoc_actors = stringr::str_squish(assoc_actors)) |>
+    tidyr::pivot_longer(-idx) |>
     dplyr::select(value) |>
     dplyr::distinct(value) |>
     dplyr::mutate(value2 = value) |>
@@ -50,12 +51,12 @@ get_edge_list <- function(df,
       stringr::str_sort(unlist(stringr::str_split(helper, ""))),collapse = "")) |>
     dplyr::distinct(helper,.keep_all = T) |>
     dplyr::select(-helper) |>
-    dplyr::rename(actor_1 = value, assoc_actor_1 = value2) |>
+    dplyr::rename(actor = value, assoc_actors = value2) |>
     dplyr::ungroup()
 
   #return(df_temp)
 
   return <- df |>
-    dplyr::filter(!stringr::str_detect(assoc_actor_1, sep)) |>
+    dplyr::filter(!stringr::str_detect(assoc_actors, ';')) |>
     dplyr::bind_rows(df_temp)
 }
