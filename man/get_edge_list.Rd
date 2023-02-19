@@ -7,15 +7,15 @@
 get_edge_list(df, actor, assoc_actors, idx, sep = ";")
 }
 \arguments{
-\item{df}{dataframe}
+\item{df}{A dataframe}
 
-\item{actor}{actor or node}
+\item{actor}{Actor or node}
 
-\item{idx}{index, row number or grouping variable}
+\item{assoc_actors}{Second actor or node with multiple values}
 
-\item{sep}{separator - default sep = ';'}
+\item{idx}{Index, row number or grouping variable}
 
-\item{assoc_actor_1}{second actor or node with multiple values sep = ';'}
+\item{sep}{Separator delimiting collapsed values - default sep = ';'}
 }
 \value{
 returns a dataframe or tibble
@@ -28,7 +28,7 @@ Creates an edge list when the second column lists any number of nodes/entities f
 }
 \examples{
 df <- tibble::tibble(
-actor_1 = c("A", "A", "B"),
+ actor_1 = c("A", "A", "B"),
  assoc_actor_1 = c("B", "B; C", "C; D; E")) |>
    dplyr::mutate(idx = dplyr::row_number()) |>
    dplyr::select(idx, dplyr::everything())

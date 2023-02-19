@@ -14,5 +14,6 @@ Imports:
     tidyr,
     stringr,
     tibble,
-    magrittr
+    magrittr,
+    rlang
 URL: https://github.com/MLDavies
