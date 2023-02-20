@@ -35,10 +35,10 @@ get_edge_list <- function(df,
                           sep = ';'
                           ){
   df_temp <- df %>%
-    dplyr::select(as.symbol(actor),
-                  as.symbol(assoc_actors),
-                  as.symbol(idx)) %>%
-    dplyr::group_by(idx) %>%
+    dplyr::select(!!actor,
+                  !!assoc_actors,
+                  !!idx) %>%
+    dplyr::group_by(.data[[idx]]) %>%
     dplyr::filter(stringr::str_detect(eval(as.symbol(assoc_actors)), sep)) %>%
     tidyr::separate_rows(dplyr::all_of(assoc_actors)) %>%
     # dplyr::mutate(!!assoc_actors := stringr::str_squish(!!rlang::enquo(assoc_actors))) %>%
