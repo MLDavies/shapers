@@ -14,14 +14,14 @@
 #'
 #' @examples
 #' df <- tibble::tibble(
-#'  actor_1 = c("A", "A", "B"),
-#'  assoc_actor_1 = c("B", "B; C", "C; D; E")) |>
+#'  actor_var = c("A", "A", "B"),
+#'  assoc_actors_var = c("B", "B; C", "C; D; E")) |>
 #'    dplyr::mutate(id_val = dplyr::row_number()) |>
 #'    dplyr::select(id_val, dplyr::everything())
 #'
 #' print(get_edge_list(df,
-#'                     actor = 'actor_1',
-#'                     assoc_actors = 'assoc_actor_1',
+#'                     actor = 'actor_var',
+#'                     assoc_actors = 'assoc_actors_var',
 #'                     idx = 'id_val'))
 #'
 #' @importFrom magrittr %>%
