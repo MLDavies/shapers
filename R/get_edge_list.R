@@ -33,16 +33,16 @@ get_edge_list <- function(df,
                           assoc_actors,
                           idx,
                           sep = ';'
-                          ){
+){
   df_temp <- df %>%
-    dplyr::select(!!actor,
-                  !!assoc_actors,
-                  !!idx) %>%
+    dplyr::select( {{actor}},
+                   {{assoc_actors}},
+                   {{idx}} ) %>%
     dplyr::group_by(.data[[idx]]) %>%
     dplyr::filter(stringr::str_detect(eval(as.symbol(assoc_actors)), sep)) %>%
     tidyr::separate_rows(dplyr::all_of(assoc_actors)) %>%
     # dplyr::mutate(!!assoc_actors := stringr::str_squish(!!rlang::enquo(assoc_actors))) %>%
-    tidyr::pivot_longer(!!actor:!!assoc_actors) %>%
+    tidyr::pivot_longer({{actor}}:{{assoc_actors}}) %>%
     dplyr::select(value) %>%
     dplyr::distinct(value) %>%
     dplyr::mutate(value2 = value) %>%
@@ -51,10 +51,10 @@ get_edge_list <- function(df,
     dplyr::mutate(helper = stringr::str_c(value, value2)) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(helper = stringr::str_c(
-      stringr::str_sort(unlist(stringr::str_split(helper, ""))),collapse = "")) %>%
+      stringr::str_sort(unlist(stringr::str_split(helper, ""))), collapse = "")) %>%
     dplyr::distinct(helper,.keep_all = T) %>%
     dplyr::select(-helper) %>%
-    dplyr::rename(!!actor := value, !!assoc_actors := value2) %>%
+    dplyr::rename({{actor}} := value, {{assoc_actors}} := value2) %>%
     dplyr::ungroup()
 
   #return(df_temp)
@@ -63,3 +63,6 @@ get_edge_list <- function(df,
     dplyr::filter(!stringr::str_detect(eval(as.symbol(assoc_actors)), sep)) %>%
     dplyr::bind_rows(df_temp)
 }
+
+
+

@@ -4,7 +4,7 @@ Title: Utility Functions For Working With ACLED Data
 Version: 0.1.0
 Author: Michael L. Davies
 Maintainer: Michael L. Davies <michael.l.davies@gmail.com>
-Description: So Far, One Function Creates an edge list when the second column contains any number of entities for each observation.
+Description: So Far, one function that creates an edge list when the second column contains any number of entities for each observation.
 License:  Mozilla Public License 2.0
 Encoding: UTF-8
 LazyData: true
